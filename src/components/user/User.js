@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 const RANDOM_USER_API = "https://randomuser.me/api"
 
-function User(props){
+function User(){
 
     const [name, setName] = useState("sample name")
     const [email, setEmail] = useState("sample email")
@@ -11,6 +11,24 @@ function User(props){
     function updateCount(currentCount){
         setCount(currentCount + 1)
     }
+
+    function randomize(){
+        fetch(RANDOM_USER_API)
+        .then((response)=> response.json())
+        .then((jsonData)=>{
+            const results= jsonData.results
+            const user = results[0]
+            const userName = `${user.name.title}  ${user.name.first}  ${user.name.last} `
+            const email = `${user.email}`
+            setName(userName);
+            setEmail(email);
+            console.log(userName)
+        })
+    }
+
+    useEffect(
+        randomize,[count]
+    )
 
 
     return(
@@ -24,5 +42,11 @@ function User(props){
     )
 
 }
+
+// function refresher(){
+//     fetch(RANDOM_USER_API)
+//     .then((data)=>data.json())
+
+// }
 
 export default User
